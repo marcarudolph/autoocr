@@ -126,6 +126,7 @@ func (p *Processor) processFile(file string) error {
 		"-o", outFile,
 		"-lang", p.languages,
 		"-rgb",
+		"-nopreproc",
 		file,
 	}
 
