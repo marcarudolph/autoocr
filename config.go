@@ -114,7 +114,7 @@ func parseArgs() (config, error) {
 		InputDir:       "/data/input",
 		OutputDir:      "/data/output",
 		PdfSandwich:    "pdfsandwich",
-		Languages:      "deu+eng",
+		Languages:      "deu",
 		Delay:          5 * time.Second,
 		LogFormat:      logFormatPlain,
 		LogLevel:       logLevel(logrus.InfoLevel),
