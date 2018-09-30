@@ -1,28 +1,27 @@
-FROM golang:1.9.2-alpine AS builder
-
-ENV CGO_ENABLED=0
-
-COPY . /go/src/github.com/xperimental/autoocr/
-WORKDIR /go/src/github.com/xperimental/autoocr/
-RUN go install .
-
-FROM ubuntu:17.10
-LABEL maintainer="Robert Jacob <xperimental@solidproject.de>"
+FROM ubuntu:bionic
+LABEL maintainer="Marc Rudolph <marc.a.rudolph@gmail.com>"
 
 ENV DEBIAN_FRONTEND=noninteractive
 
+
 RUN apt-get update \
- && apt-get install -y pdfsandwich tesseract-ocr tesseract-ocr-deu  tesseract-ocr-deu-frak \
+ && apt-get install -y --no-install-recommends pdfsandwich tesseract-ocr tesseract-ocr-deu \
  && apt-get clean \
  && rm -r /var/lib/apt/lists/* \
  && rm -r /var/cache/apt/*
 
-RUN mkdir -p /data/input /data/output
-WORKDIR /data/output
+RUN mkdir -p /data/queue /data/output
+WORKDIR /bin
 
-VOLUME [ "/data/input", "/data/output" ]
+VOLUME [ "/data/queue", "/data/output" ]
 
-COPY --from=builder /go/bin/autoocr /bin/autoocr
+ENV POLL_INTERVAL=10
+ENV QUEUE_PATH="/data/queue"
+ENV TARGET_PATH="/data/output"
+ENV LANGUAGES="deu"
+ENV PDF_SANDWICH_OPTIONS="-rgb -nopreproc"
 
-ENTRYPOINT [ "/bin/autoocr" ]
+ENTRYPOINT [ "/bin/autoocr.sh" ]
 CMD [ ]
+
+ADD ./*.sh /bin/
