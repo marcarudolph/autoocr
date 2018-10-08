@@ -4,6 +4,10 @@ INPUT_FILE="$1"
 OUTPUT_PATH="$2"
 LANGUAGES="$3"
 PDF_SANDWICH_OPTIONS="$4"
+FILE_OWNER=${5:="root"}
+FILE_GROUP=${6:="root"}
+FILE_MODE=${7:="660"}
+
 FILENAME=$(basename "$INPUT_FILE")
 OUTPUT_FILE="$OUTPUT_PATH/$FILENAME"
 
@@ -21,6 +25,9 @@ EC=$?
 
 if [ $EC == 0 ]
 then
+    chmod $FILE_MODE "$OUTPUT_FILE"
+    chown $FILE_OWNER:$FILE_GROUP "$OUTPUT_FILE"
+
     rm "$TRACE_FILE"
     rm "$PROCESS_FILE"
     echo "Sucessfully processed $INPUT_FILE"

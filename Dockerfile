@@ -20,6 +20,9 @@ ENV QUEUE_PATH="/data/queue"
 ENV TARGET_PATH="/data/output"
 ENV LANGUAGES="deu"
 ENV PDF_SANDWICH_OPTIONS="-rgb -nopreproc"
+ENV FILE_OWNER="root"
+ENV FILE_GROUP="root"
+ENV FILE_MODE="660"
 
 ENTRYPOINT [ "/bin/autoocr.sh" ]
 CMD [ ]
